@@ -1,0 +1,12 @@
+/.gradle/
+/.settings/
+target/
+bin/
+*.classpath
+*.project
+*.license
+.idea/
+classes/
+*.iml
+logs/
+node_modules/
