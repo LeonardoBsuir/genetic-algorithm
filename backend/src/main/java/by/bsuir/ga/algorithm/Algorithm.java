@@ -1,30 +1,25 @@
 package by.bsuir.ga.algorithm;
 
-public class Algorithm {
-    /* GA parameters */
-    private static final double uniformRate = 0.5;
-    private static final double mutationRate = 0.015;
-    private static final int tournamentSize = 5;
-    private static final boolean elitism = true;
-    private static final int POPULATION_SIZE = 50;
+import by.bsuir.ga.web.model.GeneticRequest;
 
+public class Algorithm {
     /* Public methods */
 
     // Evolve a population
-    public static Population evolvePopulation(Population pop) {
+    public static Population evolvePopulation(Population pop, GeneticRequest geneticRequest) {
         if (pop == null) {
-            pop = new Population(POPULATION_SIZE, true);
+            pop = new Population(geneticRequest.getPopulationSize(), true, geneticRequest);
         }
-        Population newPopulation = new Population(pop.size(), false);
+        Population newPopulation = new Population(pop.size(), false, geneticRequest);
 
         // Keep our best chromosome
-        if (elitism) {
+        if (geneticRequest.isElitism()) {
             newPopulation.savechromosome(0, pop.getFittest());
         }
 
         // Crossover population
         int elitismOffset;
-        if (elitism) {
+        if (geneticRequest.isElitism()) {
             elitismOffset = 1;
         } else {
             elitismOffset = 0;
@@ -32,27 +27,27 @@ public class Algorithm {
         // Loop over the population size and create new chromosomes with
         // crossover
         for (int i = elitismOffset; i < pop.size(); i++) {
-            Chromosome indiv1 = tournamentSelection(pop);
-            Chromosome indiv2 = tournamentSelection(pop);
-            Chromosome newIndiv = crossover(indiv1, indiv2);
+            Chromosome indiv1 = tournamentSelection(pop, geneticRequest);
+            Chromosome indiv2 = tournamentSelection(pop, geneticRequest);
+            Chromosome newIndiv = crossover(indiv1, indiv2, geneticRequest);
             newPopulation.savechromosome(i, newIndiv);
         }
 
         // Mutate population
         for (int i = elitismOffset; i < newPopulation.size(); i++) {
-            mutate(newPopulation.getchromosome(i));
+            mutate(newPopulation.getchromosome(i), geneticRequest);
         }
 
         return newPopulation;
     }
 
     // Crossover chromosomes
-    private static Chromosome crossover(Chromosome indiv1, Chromosome indiv2) {
+    private static Chromosome crossover(Chromosome indiv1, Chromosome indiv2, GeneticRequest geneticRequest) {
         Chromosome newSol = new Chromosome();
         // Loop through genes
         for (int i = 0; i < indiv1.size(); i++) {
             // Crossover
-            if (Math.random() <= uniformRate) {
+            if (Math.random() <= geneticRequest.getUniformRate()) {
                 newSol.setGene(i, indiv1.getGene(i));
             } else {
                 newSol.setGene(i, indiv2.getGene(i));
@@ -62,23 +57,23 @@ public class Algorithm {
     }
 
     // Mutate an chromosome
-    private static void mutate(Chromosome indiv) {
+    private static void mutate(Chromosome indiv, GeneticRequest geneticRequest) {
         // Loop through genes
         for (int i = 0; i < indiv.size(); i++) {
-            if (Math.random() <= mutationRate) {
+            if (Math.random() <= geneticRequest.getMutationRate()) {
                 // Create random gene
-                Gene gene = MyUtil.generateGene();
+                Gene gene = MyUtil.generateGene(geneticRequest.getFunctionRequest());
                 indiv.setGene(i, gene);
             }
         }
     }
 
     // Select chromosomes for crossover
-    private static Chromosome tournamentSelection(Population pop) {
+    private static Chromosome tournamentSelection(Population pop, GeneticRequest geneticRequest) {
         // Create a tournament population
-        Population tournament = new Population(tournamentSize, false);
+        Population tournament = new Population(geneticRequest.getTournamentSize(), false, geneticRequest);
         // For each place in the tournament get a random chromosome
-        for (int i = 0; i < tournamentSize; i++) {
+        for (int i = 0; i < geneticRequest.getTournamentSize(); i++) {
             int randomId = (int) (Math.random() * pop.size());
             tournament.savechromosome(i, pop.getchromosome(randomId));
         }

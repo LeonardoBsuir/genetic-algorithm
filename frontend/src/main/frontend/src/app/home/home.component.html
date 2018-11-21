@@ -1,0 +1,62 @@
+<h1>Genetic Algorithm 1</h1>
+<div id="plot">
+</div>
+<div id="graphDiv"></div>
+<plotly-plot [data]="data" [layout]="layout"></plotly-plot>
+<div>
+  <form novalidate [formGroup]="myForm">
+
+    <div class="form-group">
+      <label>numberOfGenerations</label>
+      <input type="number"
+             class="form-control"
+             formControlName="numberOfGenerations"
+             required>
+    </div>
+
+    <div class="form-group">
+      <label>uniformRate</label>
+      <input type="number"
+             class="form-control"
+             formControlName="uniformRate"
+             required>
+    </div>
+
+    <div class="form-group">
+      <label>mutationRate</label>
+      <input type="number"
+             class="form-control"
+             formControlName="mutationRate"
+             required>
+    </div>
+
+    <div class="form-group">
+      <label>populationSize</label>
+      <input type="number"
+             class="form-control"
+             formControlName="populationSize"
+             required>
+    </div>
+
+    <div class="form-group">
+      <label>tournamentSize</label>
+      <input type="number"
+             class="form-control"
+             formControlName="tournamentSize"
+             required>
+    </div>
+
+    <div class="form-group">
+      <label>elitism</label>
+      <input type="checkbox"
+             class="form-control"
+             formControlName="elitism"
+             required>
+    </div>
+  </form>
+
+  <button (click)="startGenetic()">Start</button>
+
+</div>
+<div>Fittest x = {{xMax[0]}}</div>
+<div>Fittest y = {{yMax[0]}}</div>

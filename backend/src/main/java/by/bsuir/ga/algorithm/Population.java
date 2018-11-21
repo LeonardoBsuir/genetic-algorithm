@@ -1,5 +1,8 @@
 package by.bsuir.ga.algorithm;
 
+import by.bsuir.ga.web.model.FunctionRequest;
+import by.bsuir.ga.web.model.GeneticRequest;
+
 public class Population {
 
     private Chromosome[] chromosomes;
@@ -8,14 +11,14 @@ public class Population {
      * Constructors
      */
     // Create a population
-    public Population(int populationSize, boolean initialise) {
+    public Population(int populationSize, boolean initialise, GeneticRequest geneticRequest) {
         chromosomes = new Chromosome[populationSize];
         // Initialise population
         if (initialise) {
             // Loop and create chromosomes
             for (int i = 0; i < size(); i++) {
                 Chromosome newchromosome = new Chromosome();
-                newchromosome.generatechromosome();
+                newchromosome.generatechromosome(geneticRequest);
                 savechromosome(i, newchromosome);
             }
         }

@@ -1,8 +1,11 @@
 package by.bsuir.ga.algorithm;
 
+import by.bsuir.ga.web.model.FunctionRequest;
+import by.bsuir.ga.web.model.GeneticRequest;
+
 public class Chromosome {
 
-    private static int defaultChromosomeLength = 10;
+    private static int defaultChromosomeLength = 20;
     private Gene[] genes = new Gene[defaultChromosomeLength];
 
 
@@ -10,9 +13,9 @@ public class Chromosome {
     private double fitness = 0;
 
     // Create a random chromosome
-    public void generatechromosome() {
+    public void generatechromosome(GeneticRequest geneticRequest) {
         for (int i = 0; i < size(); i++) {
-            genes[i] = MyUtil.generateGene();
+            genes[i] = MyUtil.generateGene(geneticRequest.getFunctionRequest());
         }
     }
 
